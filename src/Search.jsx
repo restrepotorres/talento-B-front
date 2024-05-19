@@ -63,12 +63,12 @@ const Search = () => {
       </Stack>
       <Stack gap={1} direction={"row"} pb={1} justifyContent={"space-between"}>
         <Stack gap={1} direction={"row"}>
-          <Button variant="contained" startIcon= {<EditIcon/>}>Modify</Button>
-          <Button variant="contained" onClick={() => setopenPopUp(true)} startIcon = {<AddIcon/>}>
+          <Button variant="contained" startIcon={<EditIcon />}>Modify</Button>
+          <Button variant="contained" onClick={() => setopenPopUp(true)} startIcon={<AddIcon />}>
             Create
           </Button>
         </Stack>
-        <Button color="error" variant="contained" startIcon= {<DeleteIcon/>}>
+        <Button color="error" variant="contained" startIcon={<DeleteIcon />}>
           Delete
         </Button>
       </Stack>
