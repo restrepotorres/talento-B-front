@@ -17,6 +17,11 @@ import {
   Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import CreatePopUp from "./CreatePopUp";
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+
 const headers = ["name", "genre", "id"];
 const data = [
   { name: "los jijis 2", genre: "comedia", id: 2 },
@@ -25,12 +30,14 @@ const data = [
 const Search = () => {
   const [searchParam, setsearchParam] = useState("Name");
   const [selectRow, setSelectRow] = useState();
+  const [openPopUp, setopenPopUp] = useState(false);
   const handleSelect = (e) => {
     setsearchParam(e.target.value);
   };
 
   return (
     <Box p={3} px={10}>
+      <CreatePopUp open={openPopUp} handleClose={() => setopenPopUp(false)} />
       <Typography variant="h3" textAlign={"center"} pb={3}>
         Search
       </Typography>
@@ -54,12 +61,14 @@ const Search = () => {
           <SearchIcon />
         </IconButton>
       </Stack>
-      <Stack  gap={1} direction={"row"} pb={1} justifyContent={"space-between"}>
+      <Stack gap={1} direction={"row"} pb={1} justifyContent={"space-between"}>
         <Stack gap={1} direction={"row"}>
-        <Button variant="contained">Modify</Button>
-        <Button variant="contained">Create</Button>
+          <Button variant="contained" startIcon= {<EditIcon/>}>Modify</Button>
+          <Button variant="contained" onClick={() => setopenPopUp(true)} startIcon = {<AddIcon/>}>
+            Create
+          </Button>
         </Stack>
-        <Button color="error" variant="contained">
+        <Button color="error" variant="contained" startIcon= {<DeleteIcon/>}>
           Delete
         </Button>
       </Stack>
