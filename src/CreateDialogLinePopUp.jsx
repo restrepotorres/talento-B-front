@@ -1,4 +1,6 @@
 import React from 'react'
+import { useState, useEffect } from "react";
+
 import {
     Button,
     Dialog,
@@ -13,8 +15,17 @@ import {
     TextField,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-const CreateDialogLinePopUp = ({ open, handleClose }) => {
+
+
+var genres
+
+
+
+const CreateDialogLinePopUp =({ open, handleClose }) => {
+
+
     return (
+
         <Dialog open={open} onClose={handleClose} >
             <DialogTitle>Creation</DialogTitle>
             <DialogContent>
