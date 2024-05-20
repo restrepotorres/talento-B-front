@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   FormControl,
@@ -22,22 +22,48 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 
+const baseUrl = 'http://localhost:8080/script/'
 const headers = ["name", "genre", "id"];
 const data = [
   { name: "los jijis 2", genre: "comedia", id: 2 },
   { name: "los jijis 3", genre: "drama", id: 3 },
 ];
+
 const Search = () => {
-  const [searchParam, setsearchParam] = useState("Name");
+  const [scripts, setScripts] = useState([]);
+  const [searchParam, setsearchParam] = useState("getall");
+  const [userInput, setUserInput] = useState("")
   const [selectRow, setSelectRow] = useState();
   const [openPopUp, setopenPopUp] = useState(false);
   const handleSelect = (e) => {
     setsearchParam(e.target.value);
   };
+  const fetchScripts = async () => {
+    var result
+    if (searchParam === "getall") {
+      result = await fetch(baseUrl + searchParam);
+    } else {
+      if (userInput === "") {
+        alert("Fulfull the search param")
+      } else {
+        result = await fetch(baseUrl + searchParam + userInput);
+      }
+    }
+
+    var data = await result.json()
+    console.log(data)
+    setScripts(mapScript(data));
+
+  };
+  useEffect(() => {
+    fetchScripts();
+
+  }, []);
+
 
   return (
     <Box p={3} px={10}>
-      <CreatePopUp open={openPopUp} handleClose={() => setopenPopUp(false)} />
+      <CreatePopUp open={openPopUp} handleClose={() => setopenPopUp(false)} fetchScripts={fetchScripts} />
       <Typography variant="h3" textAlign={"center"} pb={3}>
         Search
       </Typography>
@@ -49,16 +75,17 @@ const Search = () => {
         pb={15}
       >
         <FormControl sx={{ width: "100px" }}>
-          <InputLabel>Atribute</InputLabel>
+          <InputLabel>Filter</InputLabel>
           <Select value={searchParam} label="Atribute" onChange={handleSelect}>
-            <MenuItem value={"Name"}>Name</MenuItem>
-            <MenuItem value={"Genre"}>Genre</MenuItem>
-            <MenuItem value={"Id"}>Id</MenuItem>
+            <MenuItem value={"getall"} onChange={(e) => { setUrlParam(e.target.value); setUserInput("") }}>No filters</MenuItem>
+            <MenuItem value={"getbyname/"} onChange={(e) => { setUrlParam(e.target.value) }}>Name</MenuItem>
+            <MenuItem value={"getbygenrename/"} onChange={(e) => { setUrlParam(e.target.value) }}>Genre</MenuItem>
           </Select>
         </FormControl>
-        <TextField placeholder="The godfather" />
-        <IconButton>
+        <TextField placeholder="The godfather" onChange={(e) => { setUserInput(e.target.value) }} />
+        <IconButton onClick={(e) => fetchScripts()}>
           <SearchIcon />
+
         </IconButton>
       </Stack>
       <Stack gap={1} direction={"row"} pb={1} justifyContent={"space-between"}>
@@ -81,12 +108,12 @@ const Search = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
+          {scripts?.map((row) => (
             <TableRow
-              key={index}
+              key={row.idScript}
               sx={{
                 cursor: "pointer",
-                background: selectRow?.id === row.id ? "#80d8ff" : "white",
+                background: selectRow?.idScript === row.idScript ? "#80d8ff" : "white",
               }}
               onClick={() => setSelectRow(row)}
             >
@@ -100,4 +127,16 @@ const Search = () => {
     </Box>
   );
 };
+
+const mapScript = (scripts) => {
+  var adapteScripts = []
+  scripts?.forEach(element => {
+    adapteScripts.push({
+      scriptName: element.scriptName,
+      genre: element.genre.genreName,
+      idScript: element.idScript
+    })
+  });
+  return adapteScripts
+}
 export default Search;
