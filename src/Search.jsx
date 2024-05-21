@@ -15,12 +15,15 @@ import {
   TableBody,
   IconButton,
   Button,
+  Container,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CreatePopUp from "./CreatePopUp";
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from "react-router-dom";
+
 
 const baseUrl = 'http://localhost:8080/script/'
 const headers = ["name", "genre", "id"];
@@ -30,6 +33,9 @@ const data = [
 ];
 
 const Search = () => {
+  const navigate = useNavigate();
+
+
   const [scripts, setScripts] = useState([]);
   const [searchParam, setsearchParam] = useState("getall");
   const [userInput, setUserInput] = useState("")
@@ -51,7 +57,6 @@ const Search = () => {
     }
 
     var data = await result.json()
-    console.log(data)
     setScripts(mapScript(data));
 
   };
@@ -60,9 +65,18 @@ const Search = () => {
 
   }, []);
 
-
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/script/delete/${selectRow.idScript}`, {
+        method: 'DELETE',
+      }); fetchScripts();
+      console.log('Success:', await response.json());
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   return (
-    <Box p={3} px={10}>
+    <Container maxWidth={"md"}>
       <CreatePopUp open={openPopUp} handleClose={() => setopenPopUp(false)} fetchScripts={fetchScripts} />
       <Typography variant="h3" textAlign={"center"} pb={3}>
         Search
@@ -72,7 +86,7 @@ const Search = () => {
         gap={3}
         justifyContent={"center"}
         width={"100%"}
-        pb={15}
+        pb={5}
       >
         <FormControl sx={{ width: "100px" }}>
           <InputLabel>Filter</InputLabel>
@@ -90,17 +104,17 @@ const Search = () => {
       </Stack>
       <Stack gap={1} direction={"row"} pb={1} justifyContent={"space-between"}>
         <Stack gap={1} direction={"row"}>
-          <Button variant="contained" startIcon={<EditIcon />}>Modify</Button>
+          <Button variant="contained" startIcon={<EditIcon />} onClick={() => navigate(`/edit/${selectRow.idScript}`)}>Modify</Button>
           <Button variant="contained" onClick={() => setopenPopUp(true)} startIcon={<AddIcon />}>
             Create
           </Button>
         </Stack>
-        <Button color="error" variant="contained" startIcon={<DeleteIcon />}>
+        <Button color="error" variant="contained" startIcon={<DeleteIcon />} onClick={handleDelete}>
           Delete
         </Button>
       </Stack>
-      <Table>
-        <TableHead sx={{ backgroundColor: "#9e9e9e" }}>
+      <Table >
+        <TableHead >
           <TableRow>
             {headers.map((header, index) => (
               <TableCell key={index}>{header}</TableCell>
@@ -113,7 +127,7 @@ const Search = () => {
               key={row.idScript}
               sx={{
                 cursor: "pointer",
-                background: selectRow?.idScript === row.idScript ? "#80d8ff" : "white",
+                background: selectRow?.idScript === row.idScript ? "#6299c4" : "inherit",
               }}
               onClick={() => setSelectRow(row)}
             >
@@ -124,7 +138,7 @@ const Search = () => {
           ))}
         </TableBody>
       </Table>
-    </Box>
+    </Container>
   );
 };
 
