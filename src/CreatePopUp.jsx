@@ -14,14 +14,15 @@ import {
 import React from "react";
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 const CreatePopUp = ({ open, handleClose, fetchScripts }) => {
 
 
   const [data, setData] = useState([]);
   const [selectGenre, setSelectGenre] = useState();
   const [scriptName, setScriptName] = useState("");
-
+  const [response, setResponse] = useState();
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch("http://localhost:8080/genre/getall");
@@ -45,7 +46,9 @@ const CreatePopUp = ({ open, handleClose, fetchScripts }) => {
         },
         body: JSON.stringify(requestData),
       }); fetchScripts();
-      console.log('Success:', await response.json());
+      const script = await response.json()
+      handleClose()
+      navigate(`/edit/${script.idScript}`)
     } catch (error) {
       console.error('Error:', error);
     }
@@ -70,7 +73,7 @@ const CreatePopUp = ({ open, handleClose, fetchScripts }) => {
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={handleSubmit}>Create</Button>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={handleSubmit} >Create</Button>
       </DialogActions>
     </Dialog>
   );
