@@ -47,6 +47,7 @@ const CreatePopUp = ({ open, handleClose, fetchScripts }) => {
         body: JSON.stringify(requestData),
       }); fetchScripts();
       const script = await response.json()
+      console.log('Success:', script);
       handleClose()
       navigate(`/edit/${script.idScript}`)
     } catch (error) {
