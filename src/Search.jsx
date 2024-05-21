@@ -39,7 +39,7 @@ const Search = () => {
   const [scripts, setScripts] = useState([]);
   const [searchParam, setsearchParam] = useState("getall");
   const [userInput, setUserInput] = useState("")
-  const [selectRow, setSelectRow] = useState();
+  const [selectRow, setSelectRow] = useState(null);
   const [openPopUp, setopenPopUp] = useState(false);
   const handleSelect = (e) => {
     setsearchParam(e.target.value);
@@ -85,6 +85,7 @@ const Search = () => {
         direction={"row"}
         gap={3}
         justifyContent={"center"}
+        
         width={"100%"}
         pb={5}
       >
@@ -97,19 +98,19 @@ const Search = () => {
           </Select>
         </FormControl>
         <TextField placeholder="The godfather" onChange={(e) => { setUserInput(e.target.value) }} />
-        <IconButton onClick={(e) => fetchScripts()}>
+        <IconButton onClick={(e) => fetchScripts()}  sx={{background:'silver', alignSelf:'center'}}>
           <SearchIcon />
 
         </IconButton>
       </Stack>
       <Stack gap={1} direction={"row"} pb={1} justifyContent={"space-between"}>
         <Stack gap={1} direction={"row"}>
-          <Button variant="contained" startIcon={<EditIcon />} onClick={() => navigate(`/edit/${selectRow.idScript}`)}>Modify</Button>
+          <Button variant="contained" disabled={!selectRow} startIcon={<EditIcon />} onClick={() => navigate(`/edit/${selectRow.idScript}`)}>Modify</Button>
           <Button variant="contained" onClick={() => setopenPopUp(true)} startIcon={<AddIcon />}>
             Create
           </Button>
         </Stack>
-        <Button color="error" variant="contained" startIcon={<DeleteIcon />} onClick={handleDelete}>
+        <Button color="error" variant="contained" disabled={!selectRow} startIcon={<DeleteIcon />} onClick={handleDelete}>
           Delete
         </Button>
       </Stack>
