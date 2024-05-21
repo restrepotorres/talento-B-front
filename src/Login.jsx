@@ -1,6 +1,6 @@
 import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 
 const Login = () => {
   const responseMessage = (response) => {
@@ -14,17 +14,24 @@ const Login = () => {
   return (
     <Stack
       maxWidth={300}
-      height={"100vh"}
+      height={"80vh"}
       marginX={"auto"}
       direction={"column"}
       justifyContent={"space-between"}
+      pt={7}
     >
       <Typography variant="h3">Script gestor</Typography>
-      <GoogleLogin
+      <TextField label='User' />
+      <TextField label="Password" />
+      <Button variant="contained" color="green">Login</Button>
+      <Typography variant="h5" textAlign={'center'}>New here?</Typography>
+      <Button variant="contained"  >Create account</Button>
+      <Typography variant="h5" textAlign={'center'}>Or Login with Google</Typography>
+      <Stack marginLeft={3}><GoogleLogin
         width={250}
         onSuccess={responseMessage}
         onError={errorMessage}
-      />
+      /></Stack>
       <Box height={"1px"} />
     </Stack>
   );
