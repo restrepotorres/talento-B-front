@@ -1,7 +1,6 @@
 import React from "react";
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
@@ -9,12 +8,12 @@ const Login = () => {
   const navigate = useNavigate();
   const responseMessage = (response) => {
     console.log(response);
-    const token = jwtDecode(response.credential)
-    console.log(token)
+    const userData = jwtDecode(response.credential)
+    console.log(userData)
+    localStorage.setItem(`userData`, JSON.stringify(userData))
+    console.log(localStorage.getItem("userData").picture)
     navigate("/search")
   };
-
-
 
   const errorMessage = (error) => {
     console.log(error);
@@ -58,7 +57,7 @@ const Login = () => {
         onError={errorMessage}
       />
         <Typography variant="h6" marginY={2}>OR </Typography>
-        <Button variant="contained" onClick={()=>navigate("/search")}>Continue without login</Button>
+        <Button variant="contained" onClick={() => navigate("/search")}>Continue without login</Button>
 
       </Stack>
 
@@ -67,5 +66,4 @@ const Login = () => {
 
   );
 };
-
 export default Login;

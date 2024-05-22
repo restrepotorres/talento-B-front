@@ -41,6 +41,7 @@ const Search = () => {
   const [userInput, setUserInput] = useState("")
   const [selectRow, setSelectRow] = useState(null);
   const [openPopUp, setopenPopUp] = useState(false);
+  const [userData, setuserData] = useState();
   const handleSelect = (e) => {
     setsearchParam(e.target.value);
   };
@@ -61,6 +62,7 @@ const Search = () => {
 
   };
   useEffect(() => {
+    setuserData(JSON.parse(localStorage.getItem("userData")))
     fetchScripts();
 
   }, []);
@@ -78,18 +80,22 @@ const Search = () => {
   return (
     <Container maxWidth={"md"}>
       <CreatePopUp open={openPopUp} handleClose={() => setopenPopUp(false)} fetchScripts={fetchScripts} />
-      <Typography variant="h3" textAlign={"center"} pb={3}>
-        Search
-      </Typography>
+      <Stack direction={'row'} justifyContent={'space-between'} py={3}>
+        <Box width={"1px"} />
+        <Typography variant="h3" textAlign={"center"} >
+          Script Catalog
+        </Typography>
+        <Box component={'img'} src={userData ? userData.picture : "https://cdn.vectorstock.com/i/500p/63/42/avatar-photo-placeholder-icon-design-vector-30916342.jpg"} width={70} alt="usr image" sx={{ borderRadius: 13, }} />
+      </Stack>
       <Stack
         direction={"row"}
         gap={3}
         justifyContent={"center"}
-        
+
         width={"100%"}
         pb={5}
       >
-        <FormControl sx={{ width: "100px" }}>
+        <FormControl sx={{ width: "150px" }}>
           <InputLabel>Filter</InputLabel>
           <Select value={searchParam} label="Atribute" onChange={handleSelect}>
             <MenuItem value={"getall"} onChange={(e) => { setUrlParam(e.target.value); setUserInput("") }}>No filters</MenuItem>
@@ -97,8 +103,8 @@ const Search = () => {
             <MenuItem value={"getbygenrename/"} onChange={(e) => { setUrlParam(e.target.value) }}>Genre</MenuItem>
           </Select>
         </FormControl>
-        <TextField placeholder="The godfather" onChange={(e) => { setUserInput(e.target.value) }} />
-        <IconButton onClick={(e) => fetchScripts()}  sx={{background:'silver', alignSelf:'center'}}>
+        <TextField placeholder="Search" onChange={(e) => { setUserInput(e.target.value) }} />
+        <IconButton onClick={(e) => fetchScripts()} sx={{ background: 'silver', alignSelf: 'center' }}>
           <SearchIcon />
 
         </IconButton>
