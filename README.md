@@ -23,3 +23,6 @@ Now you can access to the frontend
 [http://localhost:5173/](http://localhost:5173/)
 
 As you can notice the front is serve on port 5173, so make sure this port is available 
+
+## Alternative
+If you not have docker on localmachine, but have npm 

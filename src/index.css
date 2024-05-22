@@ -1,3 +1,22 @@
 body {
     margin: 0;
+
 }
+a:link {
+    color: #00D26A;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+  a:visited {
+    color: #00D26A;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: silver;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+  

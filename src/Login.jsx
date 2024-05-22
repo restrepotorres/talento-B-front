@@ -1,39 +1,70 @@
 import React from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const responseMessage = (response) => {
     console.log(response);
+    const token = jwtDecode(response.credential)
+    console.log(token)
+    navigate("/search")
   };
+
+
 
   const errorMessage = (error) => {
     console.log(error);
   };
-
+  const handleLogin = async () => {
+    console.log('hey there')
+    const requestData = { scriptName: scriptName, idGenre: selectGenre }
+    try {
+      const response = await fetch('http://localhost:8080/script/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      }); fetchScripts();
+      const script = await response.json()
+      console.log('Success:', script);
+      handleClose()
+      navigate(`/edit/${script.idScript}`)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   return (
     <Stack
-      maxWidth={300}
-      height={"80vh"}
+      sx={{ background: '#33383E', borderRadius: 5 }}
+      maxWidth={400}
+      mt={22}
+      height={"45vh"}
       marginX={"auto"}
       direction={"column"}
       justifyContent={"space-between"}
-      pt={7}
+      textAlign={'center'}
+
     >
       <Typography variant="h3">Script gestor</Typography>
-      <TextField label='User' />
-      <TextField label="Password" />
-      <Button variant="contained" color="green">Login</Button>
-      <Typography variant="h5" textAlign={'center'}>New here?</Typography>
-      <Button variant="contained"  >Create account</Button>
-      <Typography variant="h5" textAlign={'center'}>Or Login with Google</Typography>
-      <Stack marginLeft={3}><GoogleLogin
+      <Typography variant="h5" m={2}  >Script Gestor is a WebApp to create and manage movies scripts </Typography>
+      <Stack marginX={"auto"}><GoogleLogin
         width={250}
         onSuccess={responseMessage}
         onError={errorMessage}
-      /></Stack>
-      <Box height={"1px"} />
+      />
+        <Typography variant="h6" marginY={2}>OR </Typography>
+        <Button variant="contained" onClick={()=>navigate("/search")}>Continue without login</Button>
+
+      </Stack>
+
+      <Typography variant="overline" >Made with love 💚 by <a sx={{ color: 'red' }} target="_blank" href="https://github.com/RestrepoTorres">@RestrepoTorres</a></Typography>
     </Stack>
+
   );
 };
 
