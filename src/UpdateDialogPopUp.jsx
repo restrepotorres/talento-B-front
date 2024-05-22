@@ -14,7 +14,6 @@ import {
     Stack,
     TextField,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 
 const UpdateDialogPopUp = ({ open, handleClose, idScript, fetchDialogs, selectrow }) => {
@@ -31,21 +30,17 @@ const UpdateDialogPopUp = ({ open, handleClose, idScript, fetchDialogs, selectro
 
     useEffect(() => {
         setData({ ...selectrow, idScript: idScript })
-        console.log(data)
     }, [selectrow]);
-    console.log()
     const updateProperty = async (key, value) => {
         setData(prevData => ({
             ...prevData,
             [key]: value
         })
-
         );
     };
     const handleSubmit = async () => {
         console.log(data)
         delete data['pose']
-
         try {
             const response = await fetch(`http://localhost:8080/dialog/update/${data.idDialogLine}`, {
                 method: 'PUT',
@@ -54,20 +49,14 @@ const UpdateDialogPopUp = ({ open, handleClose, idScript, fetchDialogs, selectro
                 },
                 body: JSON.stringify(data),
             }); fetchDialogs();
-            console.log('Success:', await response.json());
             handleClose()
-            //navigate("/edit")
         } catch (error) {
             console.error('Error:', error);
         }
         handleClose()
     }
 
-
-
-
     return (
-
         <Dialog open={open} onClose={handleClose} maxWidth={"xl"}>
             <DialogTitle>Edit</DialogTitle>
             <DialogContent>

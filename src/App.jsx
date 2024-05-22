@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
 import Login from "./Login";
 import { Route, Routes } from "react-router-dom";
 import Search from "./Search";
 import EditDialog from "./EditDialog"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
 
 const darkTheme = createTheme({
   palette: {
@@ -24,8 +22,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-
-
   return (<>
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />

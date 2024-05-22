@@ -24,27 +24,22 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from "react-router-dom";
 
-
 const baseUrl = 'http://localhost:8080/script/'
 const headers = ["name", "genre", "id"];
-const data = [
-  { name: "los jijis 2", genre: "comedia", id: 2 },
-  { name: "los jijis 3", genre: "drama", id: 3 },
-];
 
 const Search = () => {
   const navigate = useNavigate();
-
-
   const [scripts, setScripts] = useState([]);
   const [searchParam, setsearchParam] = useState("getall");
   const [userInput, setUserInput] = useState("")
   const [selectRow, setSelectRow] = useState(null);
   const [openPopUp, setopenPopUp] = useState(false);
   const [userData, setuserData] = useState();
-  const handleSelect = (e) => {
-    setsearchParam(e.target.value);
-  };
+  useEffect(() => {
+    setuserData(JSON.parse(localStorage.getItem("userData")))
+    fetchScripts();
+
+  }, []);
   const fetchScripts = async () => {
     var result
     if (searchParam === "getall") {
@@ -61,12 +56,9 @@ const Search = () => {
     setScripts(mapScript(data));
 
   };
-  useEffect(() => {
-    setuserData(JSON.parse(localStorage.getItem("userData")))
-    fetchScripts();
-
-  }, []);
-
+  const handleSelect = (e) => {
+    setsearchParam(e.target.value);
+  };
   const handleDelete = async () => {
     try {
       const response = await fetch(`http://localhost:8080/script/delete/${selectRow.idScript}`, {

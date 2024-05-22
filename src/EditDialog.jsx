@@ -17,7 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CreateDialogLinePopUp from "./CreateDialogLinePopUp";
 import { useParams } from "react-router-dom";
 import UpdateDialogPopUp from "./UpdateDialogPopUp";
-const headers = ["Actor", "Text", "Pose", "X position","X Rotation", "Y position","Z Rotation", "Z position","Z Rotation"];
+const headers = ["Actor", "Text", "Pose", "X position", "X Rotation", "Y position", "Z Rotation", "Z position", "Z Rotation"];
 // actor: element.actor,
 // text: element.text,
 // pose: element.pose.poseName,
@@ -37,29 +37,26 @@ const EditDialog = () => {
   const [dialogs, setDialogs] = useState([]);
   const [title, setTitle] = useState('')
   const { scriptid } = useParams()
-  const fetchDialogs = async () => {
-    var result = await fetch(`http://localhost:8080/dialog/getbyscriptid/${scriptid}`)
-    var data = await result.json()
-    setDialogs(mapScript(data));
-  }
-
   useEffect(() => {
     fetchDialogs();
     fetchTitle();
 
   }, []);
+  const fetchDialogs = async () => {
+    var result = await fetch(`http://localhost:8080/dialog/getbyscriptid/${scriptid}`)
+    var data = await result.json()
+    setDialogs(mapScript(data));
+  }
   const fetchTitle = async () => {
     const result = await fetch(`http://localhost:8080/script/getbyid/${scriptid}`)
     const script = await result.json()
     setTitle(script.scriptName)
   }
-
   const handleDelete = async () => {
     try {
       const response = await fetch(`http://localhost:8080/dialog/delete/${selectRow.idDialogLine}`, {
         method: 'DELETE',
       }); fetchDialogs();
-      console.log('Success:', await response.json());
     } catch (error) {
       console.error('Error:', error);
     }
@@ -103,7 +100,6 @@ const EditDialog = () => {
                 }}
                 onClick={() => {
                   setSelectRow(row)
-                  //console.log(selectRow)
                 }
                 }
               >

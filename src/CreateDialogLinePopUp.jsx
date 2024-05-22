@@ -13,11 +13,12 @@ import {
     Select,
     Stack,
     TextField,
-    TextareaAutosize,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 
 const CreateDialogLinePopUp = ({ open, handleClose, idScript, fetchDialogs }) => {
+    const [poses, setPoses] = useState();
+    const [data, setData] = useState({ idScript: idScript });
     const fetchPoses = async () => {
         var result = await fetch('http://localhost:8080/pose/getall')
         var data = await result.json()
@@ -26,9 +27,6 @@ const CreateDialogLinePopUp = ({ open, handleClose, idScript, fetchDialogs }) =>
     useEffect(() => {
         fetchPoses();
     }, []);
-    const [poses, setPoses] = useState();
-    const [data, setData] = useState({ idScript: idScript });
-
 
     const updateProperty = async (key, value) => {
         setData(prevData => ({
@@ -48,7 +46,6 @@ const CreateDialogLinePopUp = ({ open, handleClose, idScript, fetchDialogs }) =>
                 },
                 body: JSON.stringify(data),
             }); fetchDialogs();
-            console.log('Success:', await response.json());
             handleClose()
             navigate("/edit")
         } catch (error) {

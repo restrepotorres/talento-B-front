@@ -21,7 +21,6 @@ const CreatePopUp = ({ open, handleClose, fetchScripts }) => {
   const [data, setData] = useState([]);
   const [selectGenre, setSelectGenre] = useState();
   const [scriptName, setScriptName] = useState("");
-  const [response, setResponse] = useState();
   const navigate = useNavigate()
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +46,6 @@ const CreatePopUp = ({ open, handleClose, fetchScripts }) => {
         body: JSON.stringify(requestData),
       }); fetchScripts();
       const script = await response.json()
-      console.log('Success:', script);
       handleClose()
       navigate(`/edit/${script.idScript}`)
     } catch (error) {
