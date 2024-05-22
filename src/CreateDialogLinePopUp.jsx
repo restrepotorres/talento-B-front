@@ -57,7 +57,7 @@ const CreateDialogLinePopUp = ({ open, handleClose, idScript, fetchDialogs }) =>
 
         <Dialog open={open} onClose={handleClose} maxWidth={"xl"}>
             <DialogTitle>Creation</DialogTitle>
-            <DialogContent sx={{ minWidth: '30vw' }}>
+            <DialogContent >
                 <Stack direction={"column"} gap={1} pt={2}>
                     <Stack direction={"row"} gap={2}>
                         <TextField label="Actor" onChange={(e) => {
